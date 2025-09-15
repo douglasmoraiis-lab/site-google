@@ -3,7 +3,11 @@ name: React Build and Deploy
 on:
   push:
     branches:
-      - main  # ou a branch que você quer monitorar
+      - main
+
+permissions:
+  contents: write
+  pages: write
 
 jobs:
   build:
