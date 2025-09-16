@@ -179,7 +179,7 @@ const Contact: React.FC = () => {
               <div className="mt-6 animate-fade-in-down">
                 <FeedbackMessage
                   type={feedbackType}
-                  message={feedbackMessage} visible={false}                />
+                  message={feedbackMessage} visible={false} />
               </div>
             )}
           </div>
