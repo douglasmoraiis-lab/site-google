@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import FeedbackMessage from "../components/FeedbackMessage";
+import ReactGA from "react-ga4";
 
 const Contact: React.FC = () => {
   const [feedbackVisible, setFeedbackVisible] = useState(false);
@@ -8,16 +9,33 @@ const Contact: React.FC = () => {
   );
   const [feedbackMessage, setFeedbackMessage] = useState("");
 
+  // Inicialize o GA4 com seu ID de medição
+  // É recomendado fazer isso no ponto de entrada da sua aplicação (App.tsx)
+  // Mas para o exemplo, faremos aqui. Substitua 'YOUR_GA_MEASUREMENT_ID' pelo seu ID.
+  ReactGA.initialize("YOUR_GA_MEASUREMENT_ID");
+
   const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); // Aqui você faria a lógica de envio do formulário (e.g., para uma API) // Por simplicidade, vamos simular um sucesso.
+    e.preventDefault();
+
+    // Lógica de envio do formulário (simulação)
     console.log("Formulário enviado!");
+
+    // Dispara o evento do Google Analytics
+    ReactGA.event({
+      category: "Formulário de Contato",
+      action: "Envio de Formulário",
+      label: "Sucesso no Envio", // Opcional, para detalhar o evento
+      nonInteraction: false, // Define como false para contabilizar a interação do usuário
+    });
 
     setFeedbackType("success");
     setFeedbackMessage("Sua mensagem foi enviada com sucesso!");
-    setFeedbackVisible(true); // Limpar formulário
+    setFeedbackVisible(true);
 
+    // Limpar formulário
     (e.target as HTMLFormElement).reset();
 
+    // Oculta a mensagem de feedback após 4 segundos
     setTimeout(() => setFeedbackVisible(false), 4000);
   };
 
@@ -179,7 +197,9 @@ const Contact: React.FC = () => {
               <div className="mt-6 animate-fade-in-down">
                 <FeedbackMessage
                   type={feedbackType}
-                  message={feedbackMessage} visible={false} />
+                  message={feedbackMessage}
+                  visible={false}
+                />
               </div>
             )}
           </div>
