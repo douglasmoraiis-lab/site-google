@@ -1,5 +1,6 @@
 // src/components/Navbar.tsx
 import React, { useState } from "react";
+import ReactGA from "react-ga4";
 
 interface NavbarProps {
   onNavigate: (page: string) => void;
@@ -15,10 +16,26 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
     { name: "Contato", id: "contact" },
   ];
 
+  // Função para lidar com o clique nos botões e rastrear no GA4
+  const handleNavClick = (itemId: string, itemName: string) => {
+    // Dispara o evento de clique para o Google Analytics
+    ReactGA.event({
+      category: "Navegação",
+      action: `Clique no menu - ${itemName}`,
+      label: `Navegou para a página ${itemName}`,
+    });
+
+    // Chama a função de navegação e fecha o menu
+    onNavigate(itemId);
+    setIsOpen(false);
+  };
+
   return (
     <nav className="bg-white shadow-md py-4 sticky top-0 z-50">
       <div className="container mx-auto px-4 flex justify-between items-center">
         <h1 className="text-2xl font-bold text-blue-700">MeuSite</h1>
+
+        {/* Botão mobile */}
         <div className="md:hidden">
           <button
             onClick={() => setIsOpen(!isOpen)}
@@ -50,6 +67,8 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
             </svg>
           </button>
         </div>
+
+        {/* Menu */}
         <ul
           className={`md:flex space-x-6 ${
             isOpen
@@ -67,10 +86,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
               }
             >
               <button
-                onClick={() => {
-                  onNavigate(item.id);
-                  setIsOpen(false);
-                }}
+                onClick={() => handleNavClick(item.id, item.name)}
                 className={`text-lg font-medium px-3 py-2 rounded-md transition-colors duration-300
                   ${
                     currentPage === item.id
