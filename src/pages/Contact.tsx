@@ -15,15 +15,12 @@ const Contact: React.FC = () => {
 
     // 🚨 Tratamento de erro no envio do evento para o Google Analytics
     try {
-      if (ReactGA) {
-        ReactGA.event({
-          category: "Formulário",
-          action: "Envio de mensagem",
-          label: "Página Contato",
-        });
-      } else {
-        console.warn("Google Analytics não está inicializado.");
-      }
+      // Enviando evento para o Google Analytics
+      ReactGA.event({
+        category: "Formulário",
+        action: "Envio de mensagem",
+        label: "Página Contato",
+      });
     } catch (error) {
       console.error("Erro ao enviar evento para o Google Analytics:", error);
     }
